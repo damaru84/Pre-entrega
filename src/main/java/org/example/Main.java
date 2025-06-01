@@ -1,10 +1,11 @@
 package org.example;
 
-
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
-    private static Scanner sc = new Scanner(System.in);
+public class Inventario {
+    public static Scanner sc = new Scanner(System.in);
+    private static ArrayList<Producto> carrito = new ArrayList<>();
 
     public static void main(String[] args) {
         boolean salir = false;
@@ -14,42 +15,23 @@ public class Main {
             int opcion = leerEntero("Seleccione una opción: ");
 
             switch (opcion) {
-                case 1:
-                    agregarProducto();
-                    System.out.println("Gracias el producto fue agregado exitosamente.");
-                    break;
-                case 2:
-                    listarProductos();
-                    System.out.println("Gracias la lista productos es la siguiente:");
-                    break;
-
-                case 3:
-                    buscarActualizarProducto();
-                    System.out.println("Gracias actualice el producto.");
-                    break;
-                case 4:
-                    eliminarProducto();
-                    System.out.println("Gracias el producto fue eliminado exitosamente.");
-                    break;
-                case 5:
-                    crearPedido();
-                    System.out.println("Cargue el producto.");
-                    break;
-                case 6:
-                    listarPedidos();
-                    System.out.println("inserte la lista a agregar.");
-                    break;
-                case 7:
+                case 1 -> agregarProducto();
+                case 2 -> listarProductos();
+                case 3 -> buscarActualizarProducto();
+                case 4 -> eliminarProducto();
+                case 5 -> crearPedido();  // aún falta
+                case 6 -> listarPedidos();  // aún falta
+                case 7 -> {
                     salir = true;
                     System.out.println("Gracias por usar el sistema.");
-                    break;
-                default:
-                    System.out.println("Opción inválida.");
+                }
+                default -> System.out.println("Opción inválida.");
             }
         }
     }
-    // Métodos vacíos por ahora, para evitar errores de compilación
+
     private static void mostrarMenu() {
+        System.out.println("\n*** MENÚ ***");
         System.out.println("1. Agregar producto");
         System.out.println("2. Listar productos");
         System.out.println("3. Buscar/Actualizar producto");
@@ -57,34 +39,103 @@ public class Main {
         System.out.println("5. Crear pedido");
         System.out.println("6. Listar pedidos");
         System.out.println("7. Salir");
+        System.out.println("*******************");
     }
-
 
     private static int leerEntero(String mensaje) {
         System.out.print(mensaje);
-        int seleccion = sc.nextInt();
+        while (!sc.hasNextInt()) {
+            System.out.println("Por favor ingrese un número válido.");
+            sc.next();  // descarta la entrada inválida
+        }
+        return sc.nextInt();
+    }
 
-        return seleccion;
-
-
+    private static double leerDouble(String mensaje) {
+        System.out.print(mensaje);
+        while (!sc.hasNextDouble()) {
+            System.out.println("Por favor ingrese un número válido.");
+            sc.next();  // descarta la entrada inválida
+        }
+        return sc.nextDouble();
     }
 
     private static void agregarProducto() {
-        sc.nextLine();  // Limpiar el buffer de entrada
-        System.out.print("Nombre del producto: ");
+        sc.nextLine();  // limpiar buffer
+        System.out.println("Nombre del producto: ");
         String nombre = sc.nextLine();
-
-        System.out.print("Precio del producto: ");
-        double precio = sc.nextDouble();
-        String i = sc.nextLine();
-        System.out.print("Stock del producto: ");
-        int stock = sc.nextInt();
-
-
+        double precio = leerDouble("Precio del producto: ");
+        int stock = leerEntero("Stock del producto: ");
+        Producto nuevo = new Producto(nombre, precio, stock);
+        carrito.add(nuevo);
+        System.out.println("Producto agregado con éxito.");
     }
-    private static void listarProductos() {}
-    private static void buscarActualizarProducto() {}
-    private static void eliminarProducto() {}
-    private static void crearPedido() {}
-    private static void listarPedidos() {}
+
+    private static void listarProductos() {
+        if (!carrito.isEmpty()) {
+            System.out.println("\nLISTA DE PRODUCTOS:");
+            for (Producto p : carrito) {
+                p.print();
+            }
+        } else {
+            System.out.println("No hay productos en el sistema.");
+        }
+    }
+
+    private static void buscarActualizarProducto() {
+        sc.nextLine();  // limpiar buffer
+        System.out.print("Ingrese el nombre del producto a buscar: ");
+        String busqueda = sc.nextLine();
+        boolean encontrado = false;
+
+        for (Producto p : carrito) {
+            if (!p.contieneNombre(busqueda)) continue;
+            System.out.println("Producto encontrado:");
+            p.print();
+            System.out.print("¿Desea actualizar este producto? (s/n): ");
+            String resp = sc.nextLine();
+            if (resp.equalsIgnoreCase("s")) {
+                System.out.print("Nuevo nombre: ");
+                String nuevoNombre = sc.nextLine();
+                double nuevoPrecio = leerDouble("Nuevo precio: ");
+                int nuevoStock = leerEntero("Nuevo stock: ");
+                p.actualizar(nuevoNombre, nuevoPrecio, nuevoStock);
+                System.out.println("Producto actualizado.");
+            }
+            encontrado = true;
+        }
+
+        if (!encontrado) {
+            System.out.println("No se encontraron productos que coincidan.");
+        }
+    }
+
+    private static void eliminarProducto() {
+        sc.nextLine();  // limpiar buffer
+        System.out.print("Ingrese el nombre del producto a eliminar: ");
+        String nombre = sc.nextLine();
+        Producto aEliminar = null;
+
+        for (Producto p : carrito) {
+            if (p.nombre.equalsIgnoreCase(nombre)) {
+                aEliminar = p;
+                break;
+            }
+        }
+
+        if (aEliminar != null) {
+            carrito.remove(aEliminar);
+            System.out.println("Producto eliminado con éxito.");
+        } else {
+            System.out.println("Producto no encontrado.");
+        }
+    }
+
+    private static void crearPedido() {
+        System.out.println("Funcionalidad 'crearPedido' aún no implementada.");
+    }
+
+    private static void listarPedidos() {
+        System.out.println("Funcionalidad 'listarPedidos' aún no implementada.");
+    }
 }
