@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Inventario {
     public static Scanner sc = new Scanner(System.in);
-    private static ArrayList<Producto> carrito = new ArrayList<>();
+    private static final ArrayList<Producto> carrito = new ArrayList<>();
 
     public static void main(String[] args) {
         boolean salir = false;
@@ -131,11 +131,77 @@ public class Inventario {
         }
     }
 
+
     private static void crearPedido() {
-        System.out.println("Funcionalidad 'crearPedido' aún no implementada.");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingrese nombre del cliente: ");
+        String cliente = sc.nextLine();
+
+        System.out.print("Ingrese producto: ");
+        String producto = sc.nextLine();
+
+        System.out.println("Pedido creado para " + cliente + " con producto: " + producto);
+    }
+
+
+    private static void listarPedidos() {
+
+    ArrayList<Pedido> pedidos = new ArrayList<>();
+
+  public static void main(String[] args){
+        crearPedido();   // crear un pedidos
+        listarPedidos(); // mostrar pedidos
+    }
+
+    private static void crearPedido() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Ingrese nombre del cliente: ");
+        String cliente = sc.nextLine();
+
+        System.out.print("¿Cuántos productos desea agregar? ");
+        int cantidad = sc.nextInt();
+        sc.nextLine(); // limpiar buffer
+
+        String[] productos = new String[cantidad];
+        for (int i = 0; i < cantidad; i++) {
+            System.out.print("Producto #" + (i + 1) + ": ");
+            productos[i] = sc.nextLine();
+        }
+
+        Pedido nuevoPedido = new Pedido(cliente, productos);
+        pedidos.add(nuevoPedido);
     }
 
     private static void listarPedidos() {
-        System.out.println("Funcionalidad 'listarPedidos' aún no implementada.");
+        if (pedidos.isEmpty()) {
+            System.out.println("No hay pedidos registrados.");
+            return;
+        }
+
+        System.out.println("\n--- Lista de Pedidos ---");
+        for (int i = 0; i < pedidos.size(); i++) {
+            Pedido p = pedidos.get(i);
+            System.out.println("Pedido #" + (i + 1) + " - Cliente: " + p.cliente);
+            for (String producto : p.productos) {
+                System.out.println("  - " + producto);
+            }
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
