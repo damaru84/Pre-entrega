@@ -60,17 +60,35 @@ public class Inventario {
         return sc.nextDouble();
     }
 
-    private static void agregarProducto() {
-        sc.nextLine();  // limpiar buffer
-        System.out.println("Nombre del producto: ");
-        String nombre = sc.nextLine();
-        double precio = leerDouble("Precio del producto: ");
-        int stock = leerEntero("Stock del producto: ");
-        Producto nuevo = new Producto(nombre, precio, stock);
-        carrito.add(nuevo);
-        System.out.println("Producto agregado con éxito.");
+    @Override
+    public String toString() {
+        return "Producto: " + nombre + ", Precio: $" + precio + ", Stock: " + cantidadEnStock;
     }
+}
 
+// Clase principal que maneja la colección y agrega productos
+public class Inventario {
+    private static ArrayList<Producto> productos = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
+    // Función para agregar un producto
+    public static void agregarProducto() {
+        System.out.print("Nombre del producto: ");
+        String nombre = scanner.nextLine();
+
+        System.out.print("Precio: ");
+        double precio = scanner.nextDouble();
+
+        System.out.print("Cantidad en stock: ");
+        int cantidad = scanner.nextInt();
+        scanner.nextLine(); // Limpiar buffer
+
+        Producto nuevoProducto = new Producto(nombre, precio, cantidad);
+        productos.add(nuevoProducto);
+
+        System.out.println("Producto agregado exitosamente.");
+    }
+/// ////////////////////////////////////////////////////////////////////////////////////////////
     private static void listarProductos() {
         if (!carrito.isEmpty()) {
             System.out.println("\nLISTA DE PRODUCTOS:");
@@ -81,7 +99,7 @@ public class Inventario {
             System.out.println("No hay productos en el sistema.");
         }
     }
-
+/// ////////////////////////////////////////////////////
     private static void buscarActualizarProducto() {
         sc.nextLine();  // limpiar buffer
         System.out.print("Ingrese el nombre del producto a buscar: ");

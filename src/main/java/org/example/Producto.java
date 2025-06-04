@@ -22,4 +22,17 @@ public class Producto {
         this.precio = nuevoPrecio;
         this.stock = nuevoStock;
     }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public int stock() {
+        return stock;
+    }
+
 }
+
