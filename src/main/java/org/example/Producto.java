@@ -1,4 +1,6 @@
 public class Producto {
+    private static int idSiguiente = 0;
+    int id;
     String nombre;
     double precio;
     int stock;
@@ -8,6 +10,12 @@ public class Producto {
         this.precio = precio;
         this.stock = stock;
     }
+    }
+    // constructor
+public Producto() {
+this.id = Producto.idSiguiente;
+Producto.idSiguiente++;
+}
 
     public boolean contieneNombre(String busqueda) {
         return this.nombre.toLowerCase().contains(busqueda.toLowerCase());
@@ -34,5 +42,11 @@ public class Producto {
         return stock;
     }
 
+}
+
+public void main() {
+}
+
+public void main() {
 }
 
